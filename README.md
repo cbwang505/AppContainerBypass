@@ -11,7 +11,7 @@
 使用[Process Hacker工具](https://processhacker.sourceforge.io/)在图中可以看到AppContainer进程被赋予了指定的PackageSid和Capabilities SID的低完整性进程,windos也正是使用这些安全描述符（SD，下同）里的DACL（discretionaryaccess control list）来控制用户和用户组的访问权限。在这里我们可以利用记事本来进行尝试。![图3](https://ftp.bmp.ovh/imgs/2021/04/fca724957aeb76e7.png) 经过测试，记事本的运行过程似乎没有问题。但是，如果我们尝试使用记事本的文件 ->打开菜单，来打开其他文件（几乎是任何文件），我们会发现记事本无法访问常用的位置（例如：我的文档或我的图片）。这是因为该进程正在以低完整性级别来运行，而文件默认为中完整性级别。
 进程管理器（Process Explorer）中的 "AppContainer"，使用的是低完整性级别。
 如果我们希望记事本能够访问用户的文件（例如：文档和图片），那么就必须在这些对象中设置明确的权限，允许访问 AppContainer PackageSid。要使用的函数包括 SetNamedSecurityInfo，关于完整代码请参阅[GitHub项目](https://github.com/zodiacon/RunAppContainer/blob/master/RunAppContainer/RunAppContainerDlg.cpp).同样可以看到访问SMB共享和查询基本服务信息也被拒绝.
-!(图3)[https://ftp.bmp.ovh/imgs/2021/04/064a05f8d2b40c38.png]
+![图3](https://ftp.bmp.ovh/imgs/2021/04/064a05f8d2b40c38.png)
 
 ##  运行效果 ##
 
@@ -352,3 +352,7 @@ namespace AppContainerBypass
 [AppContainer capability](https://docs.microsoft.com/en-us/windows/uwp/packaging/app-capability-declarations#custom-capabilities)
 
 [BITS服务上传接口](https://docs.microsoft.com/en-us/openspecs/windows_protocols/mc-bup/f2411391-7785-4351-b419-fa794d7f9215)
+
+
+##  相关项目 ##
+[poc](https://gitee.com/cbwang505/app-container-bypass)
