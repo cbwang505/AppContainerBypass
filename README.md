@@ -11,15 +11,15 @@
 使用[Process Hacker工具](https://processhacker.sourceforge.io/)在图中可以看到AppContainer进程被赋予了指定的PackageSid和Capabilities SID的低完整性进程,windos也正是使用这些安全描述符（SD，下同）里的DACL（discretionaryaccess control list）来控制用户和用户组的访问权限。在这里我们可以利用记事本来进行尝试。![图3](https://ftp.bmp.ovh/imgs/2021/04/fca724957aeb76e7.png) 经过测试，记事本的运行过程似乎没有问题。但是，如果我们尝试使用记事本的文件 ->打开菜单，来打开其他文件（几乎是任何文件），我们会发现记事本无法访问常用的位置（例如：我的文档或我的图片）。这是因为该进程正在以低完整性级别来运行，而文件默认为中完整性级别。
 进程管理器（Process Explorer）中的 "AppContainer"，使用的是低完整性级别。
 如果我们希望记事本能够访问用户的文件（例如：文档和图片），那么就必须在这些对象中设置明确的权限，允许访问 AppContainer PackageSid。要使用的函数包括 SetNamedSecurityInfo，关于完整代码请参阅[GitHub项目](https://github.com/zodiacon/RunAppContainer/blob/master/RunAppContainer/RunAppContainerDlg.cpp).同样可以看到访问SMB共享和查询基本服务信息也被拒绝.
-![图3](https://ftp.bmp.ovh/imgs/2021/04/064a05f8d2b40c38.png)
+![图4](https://ftp.bmp.ovh/imgs/2021/04/064a05f8d2b40c38.png)
 
 ##  运行效果 ##
 
 在AppContainer进程中调用BITS服务的[IBackgroundCopyJob::SetNotifyCmdLine](https://docs.microsoft.com/zh-cn/windows/win32/api/bits1_5/nf-bits1_5-ibackgroundcopyjob2-setnotifycmdline)
 API会在完成上载或下载任务以后impersonate(模拟)调用方token并创建一个新进程,由于AppContainer进程不具有对本地文件进行写入的功能,所以只能使用上载模式,这里只需要赋予AppContainer进程CapabilityPicturesLibrary权限为了保证兼容性起见使用通用的windowscalculator的PackageSid,即可读取用户图片文件夹的文件作为上传文件,在一个任意的远程监听http服务模拟伪造的[BITS服务上传服务](https://docs.microsoft.com/en-us/openspecs/windows_protocols/mc-bup/f2411391-7785-4351-b419-fa794d7f9215),在文件成功上传后(实际上并没有真实的文件操作)既可触发回调.这里(BITS)服务并没有创建一个完全相同隔离等级的AppContainer进程作为回调,而是当调用方为AppContainer进程时新进程剥离了AppContainer的限制,转换为一个完全可控的低完整性进程(移除了PackageSid等),从而实现了有限的AppContainer逃逸.新进程已经可以创建子进程,读取本地文件,和访问SMB等低完整用户进程具有权限.
-![图4](https://ftp.bmp.ovh/imgs/2021/04/e36e8589d8456bd0.png)
-![图5](https://ftp.bmp.ovh/imgs/2021/04/bddbc8ce674be682.png)
-![图6](https://ftp.bmp.ovh/imgs/2021/04/6ad3acbadf44205b.png)
+![图5](https://ftp.bmp.ovh/imgs/2021/04/e36e8589d8456bd0.png)
+![图6](https://ftp.bmp.ovh/imgs/2021/04/bddbc8ce674be682.png)
+![图7](https://ftp.bmp.ovh/imgs/2021/04/6ad3acbadf44205b.png)
 
 ##  相关代码 ##
 ```
