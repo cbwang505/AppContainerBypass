@@ -1,0 +1,10 @@
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\bin\x86\Debug\AppContainerBypass.exe.config
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\bin\x86\Debug\AppContainerBypass.exe
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\bin\x86\Debug\AppContainerBypass.pdb
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\bin\x86\Debug\NtApiDotNet.dll
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\bin\x86\Debug\NtApiDotNet.xml
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\obj\x86\Debug\AppContainerBypass.csproj.CoreCompileInputs.cache
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\obj\x86\Debug\AppContainerBypass.csproj.CopyComplete
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\obj\x86\Debug\AppContainerBypass.exe
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\obj\x86\Debug\AppContainerBypass.pdb
+E:\git\ComResearch\AppContainerBypass\AppContainerBypass\obj\x86\Debug\AppContainerBypass.csprojAssemblyReference.cache
